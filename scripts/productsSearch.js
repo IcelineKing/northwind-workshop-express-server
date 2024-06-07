@@ -80,6 +80,7 @@ function createCategoriesDropDown(dataArr) {
 function remove() {
   const newpage = document.querySelector("#newpage");
   catDiv.removeChild(newpage);
+  //create an if/else if statment to see if elements exist before removing them (to use same remove method in all 3 spaces IF it exists in each function)
 }
 
 
@@ -121,6 +122,8 @@ function displayProducts(event) {
 
         })
         
+
+
        
       });
   }
