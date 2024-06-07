@@ -7,31 +7,27 @@ const dropDownsDiv = document.querySelector("#dropDowns");
 const catDiv = document.querySelector("#catDiv");
 const allProductsD = document.querySelector("#allProducts");
 
-
 window.onload = init();
 
 //adding a listener if event changes
 function init() {
   selectEl.addEventListener("change", (event) => {
-
+    allProductsD.innerHTML = "";
+    catDiv.innerHTML = "";
     //if selectEl.value = categories, disply categories;
     if (selectEl.value === "categories") {
       displayCategories(event);
-    //   catDiv.style.display = "block";
-
-
 
       //running to remove dropdown from users view
     } else if (selectEl.value === "products") {
-      remove();
-        // the next thing we want to do is run the function
-        //to display all products in the database
+      // the next thing we want to do is run the function
 
-        displayProducts(event)
+      //to display all products in the database
+
+      displayProducts(event);
 
       //else if selectEl.value = View-All, display all
     } else if (selectEl.value === "Select one") {
-      remove();
     }
   });
 }
@@ -47,7 +43,8 @@ function displayCategories(event) {
   // we are sending a get request to  http://localhost:8081/api/categories
   fetch(actualUrl)
     .then((response) => response.json())
-    .then((allCategories) => { //allCategories in an array of category objects
+    .then((allCategories) => {
+      //allCategories in an array of category objects
       console.log(allCategories);
 
       //calling our helper method below
@@ -83,47 +80,41 @@ function remove() {
   //create an if/else if statment to see if elements exist before removing them (to use same remove method in all 3 spaces IF it exists in each function)
 }
 
-
 //display all of the products in the database
 function displayProducts(event) {
-    event.preventDefault();
-  
-    let actualUrl = apiBaseUrl + selectEl.value;
-  
-    console.log("URL:" + actualUrl);
-  
-    // we are sending a get request to  http://localhost:8081/api/products
-    fetch(actualUrl)
-      .then((response) => response.json())
-      .then((allProducts) => { //allCategories in an array of category objects
-        console.log(allProducts);
-  
-        let allProductsDiv = document.createElement("div");
+  event.preventDefault();
 
-        allProducts.forEach((product) => {
+  let actualUrl = apiBaseUrl + selectEl.value;
 
-            let productDiv = document.createElement("div");
-            let productName = document.createElement("h1");
-            let productId = document.createElement("p");
+  console.log("URL:" + actualUrl);
 
-            productName.innerHTML = product.productName; //what should the product name be assigned too
-            productId.innerHTML = product.productId; // what about the id?
+  // we are sending a get request to  http://localhost:8081/api/products
+  fetch(actualUrl)
+    .then((response) => response.json())
+    .then((allProducts) => {
+      //allCategories in an array of category objects
+      console.log(allProducts);
 
-            //we should now add the child elements ( our h1 and p elements to our productDiv)
+      let allProductsDiv = document.createElement("div");
 
-            productDiv.appendChild(productName); // h1 element
-            productDiv.appendChild(productId);
+      allProducts.forEach((product) => {
+        let productDiv = document.createElement("div");
+        let productName = document.createElement("h1");
+        let productId = document.createElement("p");
 
-            // after we add both child elements to the productDiv
-            // we need to add the product div too the allProductsDiv
+        productName.innerHTML = product.productName; //what should the product name be assigned too
+        productId.innerHTML = product.productId; // what about the id?
 
-            allProductsDiv.appendChild(productDiv);
-            allProductsD.appendChild(allProductsDiv);
+        //we should now add the child elements ( our h1 and p elements to our productDiv)
 
-        })
-        
+        productDiv.appendChild(productName); // h1 element
+        productDiv.appendChild(productId);
 
+        // after we add both child elements to the productDiv
+        // we need to add the product div too the allProductsDiv
 
-       
+        allProductsDiv.appendChild(productDiv);
+        allProductsD.appendChild(allProductsDiv);
       });
-  }
+    });
+}
